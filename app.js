@@ -5,9 +5,13 @@
 */
 var express = require('express');   // We are using the express library for the web server
 var app     = express();            // We need to instantiate an express object to interact with the server in our code
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use(express.static('public'))
+
 var db      = require('./database/db-connector')
 PORT        = 9443;                 // Set a port number at the top so it's easy to change in the future
-// http://classwork.engr.oregonstate.edu:9449/
+// http://classwork.engr.oregonstate.edu:9443/
 
 //forever start app.js
 //node app.js 
