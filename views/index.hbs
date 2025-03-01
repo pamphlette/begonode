@@ -64,22 +64,22 @@
 
     <label for="input-species">Species: </label>
     <select name="input-species" id="mySelect">
-        <option value="test">Select a sp.</option>
+        <option value="">Select a sp.</option>
         {{#each species}}
         <option value="{{this.speciesID}}">{{this.speciesName}}</option>
         {{/each}}
     </select>
 
     <label for="input-section">Section: </label>
-    <input type="text" name="input-section" id="input-section">
+    <input type="text" name="input-section" id="update-section">
 
     <label for="input-chromosomes">Chromosomes: </label>
-    <input type="number" name="input-chromosomes" id="input-chromosomes">
+    <input type="number" name="input-chromosomes" id="update-chromosomes">
 
     <label for="input-country">Origin Country: </label>
-    <input type="text" name="input-country" id="input-country">
+    <input type="text" name="input-country" id="update-country">
 
-    <input type="submit">
+    <input type="submit" value= "Update Species">
 
 </form>
 

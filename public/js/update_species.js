@@ -9,46 +9,31 @@ updateSpeciesForm.addEventListener("submit", function (e) {
 
     // Get form fields we need to get data from
     let inputSpecies = document.getElementById("mySelect");
-    let inputSection = document.getElementById("input-section");
-    let inputChromo = document.getElementById("input-chromosomes");
-    let inputCountry = document.getElementById("input-country");
+    let inputSection = document.getElementById("update-section");
+    let inputChromo = document.getElementById("update-chromosomes");
+    let inputCountry = document.getElementById("update-country");
 
     // Get the values from the form fields
     let species = inputSpecies.value;
-    
+
     //Capture NULL values
     let section = inputSection.value;
-        if (!section) section = null;
-        else section = `'${data['input-section']}'`;
     
     let chromosomeCount = inputChromo.value;
-        if (isNaN(chromosomeCount)) 
-        {
-            chromosomeCount = 'NULL'
-        }
     
     let country = inputCountry.value;
-        if (!country) country = null;
-        else country = `'${data['input-country']}'`;
-    
-    // currently the database table for bsg_people does not allow updating values to NULL
-    // so we must abort if being bassed NULL for homeworld
-
-    if (isNaN(homeworldValue)) 
-    {
-        return;
-    }
-
 
     // Put our data we want to send in a javascript object
     let data = {
-        fullname: fullNameValue,
-        homeworld: homeworldValue,
-    }
+        speciesName: species,
+        subSection: section,
+        chromosomeCount: chromosomeCount,
+        originCountry: country
+    };
     
     // Setup our AJAX request
     var xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", "/put-person-ajax", true);
+    xhttp.open("PUT", "/put-species-ajax", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
     // Tell our AJAX request how to resolve
@@ -56,7 +41,7 @@ updateSpeciesForm.addEventListener("submit", function (e) {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
             // Add the new data to the table
-            updateRow(xhttp.response, fullNameValue);
+            updateRow(xhttp.response, species);
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
@@ -70,24 +55,25 @@ updateSpeciesForm.addEventListener("submit", function (e) {
 })
 
 
-function updateRow(data, personID){
+function updateRow(data, speciesID){
     let parsedData = JSON.parse(data);
-    
-    let table = document.getElementById("people-table");
+
+    let updatedSpecies = parsedData[0]
+    let table = document.getElementById("species-table");
 
     for (let i = 0, row; row = table.rows[i]; i++) {
        //iterate through rows
        //rows would be accessed using the "row" variable assigned in the for loop
-       if (table.rows[i].getAttribute("data-value") == personID) {
+       if (table.rows[i].getAttribute("data-value") == speciesID) {
 
-            // Get the location of the row where we found the matching person ID
+            // Get the location of the row where we found the matching plant
             let updateRowIndex = table.getElementsByTagName("tr")[i];
 
-            // Get td of homeworld value
-            let td = updateRowIndex.getElementsByTagName("td")[3];
-
-            // Reassign homeworld to our value we updated to
-            td.innerHTML = parsedData[0].name; 
+            //let td = updateRowIndex.getElementsByTagName("td")[3];
+            //updateRowIndex.getElementsByTagName("td")[2].innerHTML = updatedSpecies.subSection
+            // td.innerHTML = parsedData[1].subSection; 
+            // td.innerHTML = parsedData[2].chromosomeCount; 
+            // td.innerHTML = parsedData[3].originCountry; 
        }
     }
 }
