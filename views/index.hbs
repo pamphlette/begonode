@@ -1,9 +1,10 @@
 <!-- index.hbs -->
 
+
 <H1>Great job, here are some species!</H1>
 
 {{!-- Create a table --}}
-<table>
+<table id="species-table">
 
     {{!-- Header section --}}
     <thead>
@@ -16,6 +17,7 @@
                 {{@key}}
             </th>
             {{/each}}
+            <th>remove</th>
         </tr>
     </thead>
 
@@ -24,15 +26,19 @@
 
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
-        <tr>
+        <tr data-value="{{this.speciesID}}">
+            <td>{{this.speciesID}}</td>
             <td>{{this.speciesName}}</td>
             <td>{{this.subSection}}</td>
             <td>{{this.chromosomeCount}}</td>
             <td>{{this.originCountry}}</td>
+            <td><button onclick="deleteSpecies({{this.speciesID}})">delete</button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+
+<script src="./js/deleteSpecies.js"></script>
 
 <h2>Add a species to the database</h2>
 <p>To add a new species, please enter its information below and click `ADD SPECIES`!</p>
@@ -51,3 +57,4 @@
 
     <input type="submit" value="ADD SPECIES">
 </form>
+
