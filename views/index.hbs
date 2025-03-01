@@ -27,7 +27,6 @@
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
         <tr data-value="{{this.speciesID}}">
-            <td>{{this.speciesID}}</td>
             <td>{{this.speciesName}}</td>
             <td>{{this.subSection}}</td>
             <td>{{this.chromosomeCount}}</td>
@@ -58,3 +57,30 @@
     <input type="submit" value="ADD SPECIES">
 </form>
 
+
+<h2>Update a species</h2>
+<p>To update a sp. select it from the drop-down menu</p>
+<form id="update-species-form-ajax">
+
+    <label for="input-species">Species: </label>
+    <select name="input-species" id="mySelect">
+        <option value="test">Select a sp.</option>
+        {{#each species}}
+        <option value="{{this.speciesID}}">{{this.speciesName}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-section">Section: </label>
+    <input type="text" name="input-section" id="input-section">
+
+    <label for="input-chromosomes">Chromosomes: </label>
+    <input type="number" name="input-chromosomes" id="input-chromosomes">
+
+    <label for="input-country">Origin Country: </label>
+    <input type="text" name="input-country" id="input-country">
+
+    <input type="submit">
+
+</form>
+
+<script src="./js/update_species.js"></script>

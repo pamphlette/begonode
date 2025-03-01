@@ -5,7 +5,7 @@
 */
 var express = require('express');   // We are using the express library for the web server
 var app     = express();            // We need to instantiate an express object to interact with the server in our code
-PORT        = 9441;                 // Set a port number at the top so it's easy to change in the future
+PORT        = 9448;                 // Set a port number at the top so it's easy to change in the future
 // http://classwork.engr.oregonstate.edu:9443/
 
 //forever start app.js
@@ -33,8 +33,8 @@ app.get('/', function(req, res)                 // This is the basic syntax for 
     let showSpecies = "SELECT * FROM Species ORDER BY speciesName ASC;"; // Define our query
 
         db.pool.query(showSpecies, function(error, rows, fields){    // Execute the query
-
-            res.render('index', {data: rows});                  // Render the index.hbs file, and also send the renderer
+            let species = rows;
+            res.render('index', {data: rows, species: species});                  // Render the index.hbs file, and also send the renderer
         })                                                      // an object where 'data' is equal to the 'rows' we
 });                                                             // received back from the query
 
