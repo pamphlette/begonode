@@ -10,7 +10,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
 var db      = require('./database/db-connector')
-PORT        = 9443;                 // Set a port number at the top so it's easy to change in the future
+PORT        = 9441;                 // Set a port number at the top so it's easy to change in the future
 // http://classwork.engr.oregonstate.edu:9443/
 
 //forever start app.js
@@ -26,9 +26,9 @@ app.set('view engine', '.hbs');                 // Tell express to use the handl
 */
 app.get('/', function(req, res)                 // This is the basic syntax for what is called a 'route'
 {
-    let query1 = "SELECT * FROM Species;";                   // Define our query
+    let showSpecies = "SELECT speciesID,speciesName,subSection,chromosomeCount,originCountry FROM Species ORDER BY speciesName ASC;"; // Define our query
 
-        db.pool.query(query1, function(error, rows, fields){    // Execute the query
+        db.pool.query(showSpecies, function(error, rows, fields){    // Execute the query
 
             res.render('index', {data: rows});                  // Render the index.hbs file, and also send the renderer
         })                                                      // an object where 'data' is equal to the 'rows' we
@@ -68,6 +68,58 @@ app.get('/', function(req, res)                 // This is the basic syntax for 
     //     });
     // });
 //});                                        // requesting the web site.
+
+app.post('/add-species-form', function(req, res){
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    //Capture NULL values
+    // let section = data['input-section'];
+    // if (section == "")
+    // {
+    //     section = 'NULL'
+    // }
+
+    let section = data['input-section'];
+    if (!section) section = null;
+    else section = `'${data['input-section']}'`;
+
+    let chromosomeCount = parseInt(data['input-chromosomes']);
+    if (isNaN(chromosomeCount)) 
+    {
+        chromosomeCount = 'NULL'
+    }
+
+    let country = data['input-section'];
+    if (!country) country = null;
+    else country = `'${data['input-country']}'`;
+    
+    // let originCountry = data['input-country'];
+    // if (originCountry == "")
+    // {
+    //     originCountry = 'NULL"
+    // }
+
+    // Create the query and run it on the database
+    addSpecies = `INSERT INTO Species (speciesName, subSection, chromosomeCount, originCountry) VALUES ('${data['input-species']}', ${section}, ${chromosomeCount}, ${country});`;
+    db.pool.query(addSpecies, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+
+        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+        // presents it on the screen
+        else
+        {
+            res.redirect('/');
+        }
+    })
+})
 
 /*
     LISTENER

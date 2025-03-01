@@ -25,7 +25,6 @@
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
         <tr>
-            <td>{{this.speciesID}}</td>
             <td>{{this.speciesName}}</td>
             <td>{{this.subSection}}</td>
             <td>{{this.chromosomeCount}}</td>
@@ -34,3 +33,21 @@
         {{/each}}
     </tbody>
 </table>
+
+<h2>Add a species to the database</h2>
+<p>To add a new species, please enter its information below and click `ADD SPECIES`!</p>
+<form id="add-species-form" method="POST" action="/add-species-form">
+    <label for="input-species">Species: </label>
+    <input type="text" name="input-species" id="input-species" placeholder = "(required)" required/>
+    
+    <label for="input-section">Section: </label>
+    <input type="text" name="input-section" id="input-section">
+
+    <label for="input-chromosomes">Chromosomes: </label>
+    <input type="number" name="input-chromosomes" id="input-chromosomes">
+
+    <label for="input-country">Origin Country: </label>
+    <input type="text" name="input-country" id="input-country">
+
+    <input type="submit" value="ADD SPECIES">
+</form>
